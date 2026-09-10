@@ -1,5 +1,5 @@
 ---
-description: Kompers product problem and Level 1 Midnight Moon checklist
+description: Kompers product problem and Midnight Moon level checklist
 alwaysApply: true
 ---
 
@@ -11,16 +11,23 @@ Prove you meet a public bar without revealing the private number.
 - Public ledger: threshold, commitment, qualified flag, proof count.
 - Private witness: the secret figure. Never write it to the ledger.
 - disclose() only the commitment and the boolean result — never the raw value.
-- Deploy target: Midnight Preview unless the user says otherwise.
+- Repo: https://github.com/dikaveecee/kompers
+- Preview (Level 1): `68417f23b79303d1ea1dadce6ba5af7c005100de655943dc101c48cb875c2928`
 
-## Level 1 — New Moon (must all pass)
+## Level 1 — New Moon — APPROVED
 
-- Compact contract compiles (`compact compile` / `npm run compile`)
-- Passing test suite
-- `managed/` present with circuits + keys
-- Deployed to Preview with a visible contract address
-- README: setup, public vs private witness, initial product idea paragraph
-- Public GitHub repo
-- Screenshots: compile (circuits listed) and deployed address
-- **Minimum 5 meaningful commits** (not one dump). Keep adding focused commits as work lands. Do not squash them away.
-- No wallet UI yet
+Do not redo Level 1.
+
+## Level 2 — Waxing Crescent (current)
+
+Same product, now with a face:
+
+- Lace connect / disconnect
+- Circuit called from the frontend
+- Observable privacy: prove the figure without showing it (UI shows qualified yes/no + commitment, never the raw number on-chain)
+- Contract deployed to **Preprod** (not Preview) with a verifiable address
+- Live demo (Vercel/Netlify)
+- Demo video: wallet connect + successful circuit call (user records)
+- README privacy claim
+- **Minimum 8 meaningful commits** for this cycle
+- Submit the **kompers** repo on RiseIn (not a numeric repo id)
