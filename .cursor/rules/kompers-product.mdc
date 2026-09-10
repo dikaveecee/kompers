@@ -31,3 +31,12 @@ Same product, now with a face:
 - README privacy claim
 - **Minimum 8 meaningful commits** for this cycle
 - Submit the **kompers** repo on RiseIn (not a numeric repo id)
+
+## Visual identity
+
+Follow root `DESIGN.md` (Stitch format). Method from getdesign.md analyses of Stripe, Coinbase, and Linear — Kompers tokens, not their brand colors.
+
+- Light institutional desk. Public Sans + Source Serif 4 + IBM Plex Mono.
+- One teal CTA `#0f5c66`. Navy ink `#0d253d`. White canvas.
+- Two-up private figure vs public record. 44px touch targets. Tabular numbers.
+- Do not regress to dark gold-on-black stacked cards or Inter/purple meshes.
