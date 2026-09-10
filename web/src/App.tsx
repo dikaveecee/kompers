@@ -9,7 +9,26 @@ import {
   joinKompers,
 } from './midnight';
 
+const THEME_KEY = 'kompers-theme';
 const DEFAULT_CONTRACT = import.meta.env.VITE_DEFAULT_CONTRACT ?? '';
+
+type Theme = 'light' | 'dark';
+
+function readTheme(): Theme {
+  if (typeof document !== 'undefined' && document.documentElement.dataset.theme === 'dark') {
+    return 'dark';
+  }
+  return 'light';
+}
+
+function applyTheme(theme: Theme) {
+  document.documentElement.dataset.theme = theme;
+  try {
+    localStorage.setItem(THEME_KEY, theme);
+  } catch {
+    // Private browsing can block storage; the session theme still applies.
+  }
+}
 
 type WalletState = 'detecting' | 'no-wallet' | 'ready' | 'connecting' | 'connected';
 
@@ -51,6 +70,21 @@ function randomSalt(): Uint8Array {
   return salt;
 }
 
+function formatFigure(n: bigint): string {
+  return n.toLocaleString('en-US');
+}
+
+function CrescentMark() {
+  return (
+    <svg className="crescent" viewBox="0 0 32 32" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M18.2 4.2a12 12 0 1 0 9.1 19.3 14.5 14.5 0 1 1-9.1-19.3z"
+      />
+    </svg>
+  );
+}
+
 export default function App() {
   const [walletState, setWalletState] = useState<WalletState>('detecting');
   const [walletAPI, setWalletAPI] = useState<InitialAPI | undefined>();
@@ -62,6 +96,7 @@ export default function App() {
   const [joinInput, setJoinInput] = useState(DEFAULT_CONTRACT);
   const [figure, setFigure] = useState('');
   const [busy, setBusy] = useState(false);
+  const [theme, setTheme] = useState<Theme>(readTheme);
 
   const { data: ledger, loading, error: ledgerError, refresh } = usePublicLedger(
     contractAddress || null,
@@ -181,154 +216,235 @@ export default function App() {
   const connected = walletState === 'connected';
 
   return (
-    <>
-      <header>
-        <div>
-          <div className="mark">Kompers · Midnight Preprod</div>
-          <h1>Prove the bar. Keep the number.</h1>
-          <p className="lede">
-            A public threshold sits on-chain. Your private figure never does. Lace signs a
-            circuit that discloses only qualified yes/no and a hiding commitment.
-          </p>
+    <div className="app">
+      <nav className="nav">
+        <div className="brand">
+          <CrescentMark />
+          <div className="wordmark">
+            Kompers
+            <small>Private eligibility</small>
+          </div>
         </div>
-        <div className="wallet">
+        <div className="nav-actions">
+          <button
+            className="icon-btn"
+            type="button"
+            aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+            aria-pressed={theme === 'dark'}
+            title={theme === 'dark' ? 'Light' : 'Dark'}
+            onClick={() => {
+              const next: Theme = theme === 'dark' ? 'light' : 'dark';
+              applyTheme(next);
+              setTheme(next);
+            }}
+          >
+            {theme === 'dark' ? (
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M12 4.5a1 1 0 0 1 1 1V7a1 1 0 1 1-2 0V5.5a1 1 0 0 1 1-1Zm0 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm7.5-2.5a1 1 0 1 1 0-2h1.5a1 1 0 1 1 0 2H19.5ZM4 12a1 1 0 0 1-1-1 1 1 0 0 1 1-1h1.5a1 1 0 1 1 0 2H4Zm12.95 5.45a1 1 0 0 1 1.4 1.4l-1.05 1.05a1 1 0 1 1-1.4-1.4l1.05-1.05Zm-11.3-11.3 1.05-1.05a1 1 0 0 1 1.4 1.4L6.05 7.55a1 1 0 0 1-1.4-1.4Zm11.3 0a1 1 0 0 1 1.4-1.4l1.05 1.05a1 1 0 1 1-1.4 1.4l-1.05-1.05Zm-11.3 11.3 1.05 1.05a1 1 0 1 1-1.4 1.4L4.65 17.45a1 1 0 0 1 1.4-1.4ZM12 17a1 1 0 0 1 1 1v1.5a1 1 0 1 1-2 0V18a1 1 0 0 1 1-1Z"
+                />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M16.5 13.1A7 7 0 0 1 10.9 7.5 6.2 6.2 0 0 1 11 6a8 8 0 1 0 7 11.1 6.2 6.2 0 0 1-1.5-3.99Z"
+                />
+              </svg>
+            )}
+          </button>
+          <span className="chip">Midnight Preprod</span>
           {walletState === 'no-wallet' ? (
             <a
               href="https://chromewebstore.google.com/detail/lace/gafhhkghbfjjkeiendhlofajokpaflmk"
               target="_blank"
               rel="noreferrer"
             >
-              Install Lace Midnight
+              Install Lace
             </a>
           ) : connected && address ? (
-            <>
+            <div className="session">
               <code title={address}>{trunc(address)}</code>
               <button className="ghost" type="button" onClick={() => void disconnect()}>
                 Disconnect
               </button>
-            </>
+            </div>
           ) : (
             <button type="button" onClick={() => void connect()} disabled={walletState !== 'ready'}>
               {walletState === 'connecting' ? 'Connecting…' : 'Connect Lace'}
             </button>
           )}
         </div>
-      </header>
+      </nav>
 
-      <section className="panel">
-        <h2>Privacy claim</h2>
-        <p className="claim">
-          Observers can read the posted threshold, whether the last prover qualified, a
-          commitment, and a proof count. They cannot read the secret figure. That value is a
-          Compact witness: compared in-circuit, never written with <code>disclose()</code>.
-        </p>
-      </section>
+      <main>
+        <section className="hero">
+          <p className="kicker">Compact comparison</p>
+          <h1>Meet the bar. Keep the figure.</h1>
+          <p className="lede">
+            A hiring desk, lender, or DAO only needs yes or no. Your number stays on this
+            device. The chain records a stamp and a hiding commitment.
+          </p>
+        </section>
 
-      <section className="panel">
-        <h2>Contract on Preprod</h2>
-        <p className="hint">
-          Join a deployed address, or connect Lace (with tDUST) and deploy a fresh one.
-        </p>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            onJoin();
-          }}
-        >
-          <label>
-            <span className="label">Contract address</span>
-            <input
-              value={joinInput}
-              onChange={(e) => setJoinInput(e.target.value.trim())}
-              placeholder="64 hex characters"
-              spellCheck={false}
-            />
-          </label>
-          <div className="row">
-            <button type="submit">Use this contract</button>
-            <button
-              className="ghost"
-              type="button"
-              onClick={() => void onDeploy()}
-              disabled={!connected || busy}
+        <ul className="trust">
+          <li>
+            <strong>Private by default</strong>
+            <span>The figure is a Compact witness. It is never a ledger field.</span>
+          </li>
+          <li>
+            <strong>Public bar only</strong>
+            <span>Observers see the threshold, qualified yes/no, and a commitment.</span>
+          </li>
+          <li>
+            <strong>You stay in control</strong>
+            <span>Connect Lace, prove, disconnect. Session state is local.</span>
+          </li>
+        </ul>
+
+        <section className="workspace">
+          <article className="card">
+            <header>
+              <h2>Your figure</h2>
+              <span className="side">Never disclosed</span>
+            </header>
+            <p className="note">
+              Typed as a password, used once to prove you clear the public bar, then cleared
+              from this form.
+            </p>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                void onProve();
+              }}
             >
-              {busy ? 'Working…' : 'Deploy new on Preprod'}
-            </button>
-          </div>
-        </form>
-        {contractAddress ? (
-          <p className="hint">
-            Active: <span className="value">{contractAddress}</span>
+              <div className="well">
+                <label>
+                  <span className="label">Secret figure</span>
+                  <input
+                    type="password"
+                    inputMode="numeric"
+                    autoComplete="off"
+                    value={figure}
+                    onChange={(e) => setFigure(e.target.value)}
+                    placeholder="stays on this device"
+                  />
+                </label>
+              </div>
+              <div className="row">
+                <button className="grow" type="submit" disabled={!connected || !contractAddress || busy}>
+                  {busy ? 'Proving…' : 'Prove I meet the bar'}
+                </button>
+              </div>
+            </form>
+            <p className="fine">
+              Circuit <code>proveMeetsThreshold</code> compares in-circuit. Only the outcome is
+              disclosed.
+            </p>
+          </article>
+
+          <article className="card">
+            <header>
+              <h2>Public record</h2>
+              <span className="side">What the chain shows</span>
+            </header>
+            {!contractAddress ? (
+              <p className="empty">Join or deploy a contract to read the public slip.</p>
+            ) : loading && !ledger ? (
+              <p className="empty">Reading the Preprod indexer…</p>
+            ) : ledgerError && !ledger ? (
+              <p className="empty">{ledgerError}</p>
+            ) : ledger ? (
+              <div className="ledger">
+                <div className="row-line">
+                  <span className="label">Bar</span>
+                  <div className="value">{formatFigure(ledger.threshold)}</div>
+                </div>
+                <div className="row-line">
+                  <span className="label">Last result</span>
+                  <span className={`stamp ${ledger.lastQualified ? 'yes' : 'no'}`}>
+                    {ledger.lastQualified ? 'Qualified' : 'Not qualified'}
+                  </span>
+                </div>
+                <div className="row-line">
+                  <span className="label">Proofs</span>
+                  <div className="value">{ledger.proofCount.toString()}</div>
+                </div>
+                <div className="row-line">
+                  <span className="label">Commitment</span>
+                  <div className="value" title={ledger.lastCommitmentHex}>
+                    {trunc(ledger.lastCommitmentHex)}
+                  </div>
+                </div>
+              </div>
+            ) : null}
+            <p className="fine">There is no figure on this slip. That omission is the product.</p>
+          </article>
+        </section>
+
+        <section className="card contract">
+          <header>
+            <h2>Contract</h2>
+            <span className="side">Preprod</span>
+          </header>
+          <p className="note">
+            Paste a deployed address, or connect Lace with tDUST and open a new desk.
+          </p>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              onJoin();
+            }}
+          >
+            <label>
+              <span className="label">Contract address</span>
+              <input
+                value={joinInput}
+                onChange={(e) => setJoinInput(e.target.value.trim())}
+                placeholder="64 hex characters"
+                spellCheck={false}
+              />
+            </label>
+            <div className="row" style={{ marginTop: 12 }}>
+              <button type="submit">Use this contract</button>
+              <button
+                className="ghost"
+                type="button"
+                onClick={() => void onDeploy()}
+                disabled={!connected || busy}
+              >
+                {busy ? 'Working…' : 'Deploy new'}
+              </button>
+            </div>
+          </form>
+          {contractAddress ? (
+            <p className="fine">
+              Active <span className="value">{contractAddress}</span>
+            </p>
+          ) : (
+            <p className="fine">Lace → Tokens → Generate tDUST if deploy fails on fees.</p>
+          )}
+        </section>
+
+        {status ? (
+          <p className="flash ok" role="status">
+            {status}
           </p>
         ) : null}
-      </section>
-
-      <section className="panel">
-        <h2>Public ledger — what the world can see</h2>
-        {!contractAddress ? (
-          <p className="hint">No contract selected yet.</p>
-        ) : loading && !ledger ? (
-          <p className="hint">Reading indexer…</p>
-        ) : ledgerError && !ledger ? (
-          <p className="error">{ledgerError}</p>
-        ) : ledger ? (
-          <div className="grid">
-            <div>
-              <span className="label">Threshold</span>
-              <div className="value">{ledger.threshold.toString()}</div>
-            </div>
-            <div>
-              <span className="label">Last qualified</span>
-              <div className={`value ${ledger.lastQualified ? 'yes' : 'no'}`}>
-                {ledger.lastQualified ? 'yes' : 'no'}
-              </div>
-            </div>
-            <div>
-              <span className="label">Proof count</span>
-              <div className="value">{ledger.proofCount.toString()}</div>
-            </div>
-            <div>
-              <span className="label">Last commitment</span>
-              <div className="value">{ledger.lastCommitmentHex}</div>
-            </div>
-          </div>
+        {error ? (
+          <p className="flash bad" role="alert">
+            {error}
+          </p>
         ) : null}
-        <p className="hint">The secret figure is not a ledger field. That absence is the product.</p>
-      </section>
+      </main>
 
-      <section className="panel">
-        <h2>Private witness — prove without showing</h2>
-        <p className="hint">
-          Type the figure as a password. It is held in local private state, used once as a
-          witness for <code>proveMeetsThreshold</code>, then cleared from this form.
-        </p>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            void onProve();
-          }}
-        >
-          <label>
-            <span className="label">Secret figure</span>
-            <input
-              type="password"
-              inputMode="numeric"
-              autoComplete="off"
-              value={figure}
-              onChange={(e) => setFigure(e.target.value)}
-              placeholder="never shown on-chain"
-            />
-          </label>
-          <div className="row">
-            <button type="submit" disabled={!connected || !contractAddress || busy}>
-              {busy ? 'Proving…' : 'Call proveMeetsThreshold'}
-            </button>
-          </div>
-        </form>
-      </section>
-
-      {status ? <p className="status">{status}</p> : null}
-      {error ? <p className="error">{error}</p> : null}
-    </>
+      <footer>
+        <span>
+          <em>kompers</em> — compact comparisons on Midnight
+        </span>
+        <span>Witness compared in-circuit. Outcome disclosed. Number never is.</span>
+      </footer>
+    </div>
   );
 }
