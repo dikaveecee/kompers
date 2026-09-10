@@ -53,7 +53,7 @@ services:
   proof-server:
     image: midnightntwrk/proof-server:8.1.0
     container_name: kompers-proof-server
-    command: ["midnight-proof-server -v"]
+    command: ["midnight-proof-server", "-v", "--network", "preprod"]
     ports:
       - "6300:6300"
     environment:
