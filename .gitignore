@@ -141,3 +141,18 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Midnight local deploy state (wallet seed + contract address)
+.midnight-state.json
+.midnight-wallet-state/
+deployment.json
+*-state.json
+
+# Editor
+.idea/
+*.swp
+
