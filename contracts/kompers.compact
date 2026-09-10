@@ -1,0 +1,41 @@
+pragma language_version >= 0.23;
+
+import CompactStandardLibrary;
+
+// Kompers — prove you meet a public bar without revealing the private number.
+//
+// Private witness: the secret figure (compensation, savings, hours, score).
+// Public ledger: the threshold, a commitment, the yes/no, and a proof count.
+// disclose() is used only for the outcome and the commitment — never the figure.
+
+witness secretFigure(): Uint<64>;
+witness secretSalt(): Bytes<32>;
+
+export ledger threshold: Uint<64>;
+export ledger lastCommitment: Bytes<32>;
+export ledger lastQualified: Boolean;
+export ledger proofCount: Counter;
+
+constructor() {
+  // Example public bar: 80_000 (e.g. a compensation floor). Anyone can
+  // replace it with setThreshold; the number is public on purpose.
+  threshold = 80000;
+  lastQualified = false;
+  lastCommitment = pad(32, "");
+}
+
+// Posted bar — this value is meant to be public.
+export circuit setThreshold(newThreshold: Uint<64>): [] {
+  threshold = disclose(newThreshold);
+}
+
+// Compare the private figure to the public bar. Only the boolean result and
+// a hiding commitment cross the ledger boundary.
+export circuit proveMeetsThreshold(): [] {
+  const figure = secretFigure();
+  const salt = secretSalt();
+  const qualified = figure >= threshold;
+  lastQualified = disclose(qualified);
+  lastCommitment = disclose(persistentCommit<Uint<64>>(figure, salt));
+  proofCount.increment(1);
+}
