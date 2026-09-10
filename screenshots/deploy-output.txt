@@ -1,0 +1,9 @@
+Midnight Preview deploy — Level 1
+
+Network: preview
+Wallet: mn_addr_preview1e0pfvc06gy3847seqd8lrwn273438j25hfvyr77qp3j2qvpu42fsa0prh2
+Faucet tx: 00daa54b33210ab1972ab9bbbc1af74a42a76173d406afe8a2bbd15b13e571ecc5
+
+Contract deployed successfully!
+
+Contract Address: 68417f23b79303d1ea1dadce6ba5af7c005100de655943dc101c48cb875c2928

@@ -107,7 +107,9 @@ Deploy to **Preview**:
 npm run deploy
 ```
 
-The first run prints a wallet address and the Preview faucet URL. Fund the wallet, wait for tNIGHT, then the script deploys and prints the **contract address**. Wallet seed lives in `.midnight-state.json` (gitignored).
+The deploy script prints the **contract address**. Save a screenshot of that output for the submission.
+
+**Preview contract address (Level 1):** `68417f23b79303d1ea1dadce6ba5af7c005100de655943dc101c48cb875c2928`
 
 ---
 
@@ -118,7 +120,7 @@ The first run prints a wallet address and the Preview faucet URL. Fund the walle
 | Public GitHub repo + README | this repository |
 | Setup instructions | [Setup — run locally](#setup--run-locally) |
 | Screenshot: compile (circuits listed) | `screenshots/compile.png` |
-| Screenshot: deployed address | `screenshots/deploy.png` |
+| Screenshot: deployed address | `screenshots/deploy-output.txt` (screenshot as `screenshots/deploy.png`) |
 | Public state vs private witness | [section above](#public-state-vs-private-witness) |
 | Initial product idea | [section above](#initial-product-idea) |
 | 5+ meaningful commits | git history |
