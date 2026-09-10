@@ -45,6 +45,13 @@ async function main() {
     console.log(` Restored ${restoredCount}/3 child wallets from .midnight-wallet-state`);
   }
 
+  const previewAddress = walletCtx.unshieldedKeystore.getBech32Address();
+  console.log(`\n Wallet Address: ${previewAddress}`);
+  if (network !== 'undeployed' && networkConfig.faucet) {
+    console.log(` Faucet: ${networkConfig.faucet}`);
+    console.log(' Fund this address now. Sync can take several minutes.\n');
+  }
+
   console.log(' Syncing with network...');
   const syncStart = Date.now();
   const syncInterval = setInterval(() => {

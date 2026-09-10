@@ -1,5 +1,5 @@
 ---
-description: Kompers product problem and Level 1 constraints
+description: Kompers product problem and Level 1 Midnight Moon checklist
 alwaysApply: true
 ---
 
@@ -11,5 +11,16 @@ Prove you meet a public bar without revealing the private number.
 - Public ledger: threshold, commitment, qualified flag, proof count.
 - Private witness: the secret figure. Never write it to the ledger.
 - disclose() only the commitment and the boolean result — never the raw value.
-- Deploy target: Midnight Preview (not Preprod) unless the user says otherwise.
-- Level 1 ships a Compact contract, tests, managed/ circuits, Preview address, README, 5 commits. No wallet UI yet.
+- Deploy target: Midnight Preview unless the user says otherwise.
+
+## Level 1 — New Moon (must all pass)
+
+- Compact contract compiles (`compact compile` / `npm run compile`)
+- Passing test suite
+- `managed/` present with circuits + keys
+- Deployed to Preview with a visible contract address
+- README: setup, public vs private witness, initial product idea paragraph
+- Public GitHub repo
+- Screenshots: compile (circuits listed) and deployed address
+- **Minimum 5 meaningful commits** (not one dump). Keep adding focused commits as work lands. Do not squash them away.
+- No wallet UI yet
