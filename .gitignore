@@ -149,6 +149,7 @@ Thumbs.db
 # Midnight local deploy state (wallet seed + contract address)
 .midnight-state.json
 .midnight-wallet-state/
+midnight-level-db/
 deployment.json
 *-state.json
 
