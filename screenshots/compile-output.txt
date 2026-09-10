@@ -1,0 +1,11 @@
+Compile output (Compact 0.31.1 + zkir):
+
+Compiling 2 circuits:
+  - proveMeetsThreshold
+  - setThreshold
+
+Generated:
+  contracts/managed/kompers/zkir/*.zkir
+  contracts/managed/kompers/keys/*.prover
+  contracts/managed/kompers/keys/*.verifier
+  contracts/managed/kompers/contract/index.js

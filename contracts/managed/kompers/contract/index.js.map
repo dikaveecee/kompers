@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "file": "index.js",
+  "sourceRoot": "../../../",
+  "sources": ["kompers.compact", "compiler/standard-library.compact"],
+  "names": [],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EAkBA;;;;;;;;;;;;;;;;MASA,AAAA,YAEC;;;;;cAF2B,cAAsB;;;;;;;;;;;;;;;;;;yCAAtB,cAAsB;;;;;;;;;8CAAtB,cAAsB;;;OAEjD;MAID,AAAA,mBAOC;;;;;;;;;;;;;;;;;;;;;;OAAA;;;;;;;;;;GAhBA;EAND;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;IALA;;;;;;;;;yEAAkC;IAClC;;;;;;;;;yEAAwC;IACxC;;;;;;;;;yEAAqC;IACrC;;;;;;;;;yEAAkC;UAKhC,KAAS;IAAT;;;;;;;2HAAA,KAAS;;yEAAA;IACT;;;;;;;;;yEAAa;IACb;;;;;;;;;yEAAc;;;;;;;GACf;ECxBD,AAAA,oBAAA,SAAA;;uDAAA;uDAAA;;;EDUA,AAAA,eAAiC;;0DAAjC,YAAiC;;;;;;;;;;;;;;GAAA;EACjC,AAAA,aAAgC;;0DAAhC,UAAgC;;;;;;;;;;;;;;GAAA;EAgBhC,AAAA,eAEC,4BAF2B,cAAsB;IAChD;;;;;;;2HAAqB,cAAY;;yEAAxB;;GACV;EAID,AAAA,sBAOC;UANO,QAAuB;UACvB,MAAmB;UACnB,WAA+B,GAAnB,QAAM;;gDAAI;;;;;;;;;;;qHAAS;IACrC;;;;;;;2HAAyB,WAAS;;yEAArB;UACb,KAAc,4BAAuC,QAAM,EAAE,MAAI;IAAjE;;;;;;;2HAAA,KAAc;;yEAAA;UACd,KAAU;IAAV;;;;;;;;;;6FAAA,KAAU;;;;wEAAA;;GACX;;;;;;;;;;;;;;;;IA3BD;qCAAA;;;;;;;;;;;0GAAkC;KAAA;IAClC;qCAAA;;;;;;;;;;;0GAAwC;KAAA;IACxC;qCAAA;;;;;;;;;;;0GAAqC;KAAA;IACrC;qCAAA;;;;;;;;;;;0GAAkC;KAAA;;;;;;;;;;;;"
+}
